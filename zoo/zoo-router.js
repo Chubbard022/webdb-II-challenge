@@ -37,6 +37,7 @@ router.get("/:id",(req,res)=>{
         res.status(500).json(err)
     })
 })
+
 router.post("/",(req,res)=>{
     db("zoos")
     .insert(req.body,"id")
@@ -55,5 +56,23 @@ router.post("/",(req,res)=>{
         res.status(500).json(err)
     })
 })
+
+router.put('/:id', (req, res) => {
+    db('zoos')
+      .where({ id: req.params.id })
+      .update(req.body)
+      .then(count => {
+        if (count > 0) {
+          res.status(200).json({
+            message: `${count} ${count > 1 ? 'records' : 'record'} updated`
+          });
+        } else {
+          res.status(404).json({ message: 'Role does not exist' });
+        }
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      });
+  });
 
 module.exports = router;
