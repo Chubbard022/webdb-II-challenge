@@ -22,5 +22,23 @@ router.get("/",(req,res)=>{
     })
 })
 
+router.post("/",(req,res)=>{
+    db("zoos")
+    .insert(req.body,"id")
+    .then(ids=>{
+        db("zoos")
+            .where({id: ids[0]})
+            .first()
+            .then(animal=>{
+                res.status(201).json(animal)
+            })
+            .catch(err=>{
+                res.status(500).json(err)
+            })
+    })
+    .catch(err=>{
+        res.status(500).json(err)
+    })
+})
 
 module.exports = router;
