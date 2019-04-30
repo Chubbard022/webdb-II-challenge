@@ -22,6 +22,21 @@ router.get("/",(req,res)=>{
     })
 })
 
+router.get("/:id",(req,res)=>{
+    db("zoos")
+    .where({id: req.params.id})
+    .first()
+    .then(animal=>{
+        if(animal){
+            res.status(200).json(animal)
+        }else{
+            res.status(404).json({Message: "role not found"})
+        }
+    })
+    .catch(err=>{
+        res.status(500).json(err)
+    })
+})
 router.post("/",(req,res)=>{
     db("zoos")
     .insert(req.body,"id")
